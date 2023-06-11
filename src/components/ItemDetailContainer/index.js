@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Spinner from "../Spinner/Spinner";
+import NotFound from "../../assets/images/notfound.jpg"
 
 import axios from "axios";
 
@@ -51,7 +52,10 @@ const ItemDetailContainer = () => {
               </div>
             ) : (<div className='detail lg:mt-12' key={titleDetail.id}>
                       <div className="detailContainer lg:w-full lg:px-44 lg:flex lg:justify-center lg:items-center">
-                          <img src={titleDetail.primaryImage?.url} alt="" className='lg:max-w-lg'></img>
+                          { titleDetail.primaryImage?.url === undefined ?
+                            <img src={NotFound} alt=""></img> :
+                            <img src={titleDetail.primaryImage?.url} alt="" className='lg:max-w-lg'></img>
+                          }
                           <div className='detailInfo p-6 lg:p-10'>
                             <h6 className='italic text-red-300 lg:text-2xl'>
                               <span>{titleDetail.releaseDate?.day} / </span>

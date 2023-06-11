@@ -14,7 +14,7 @@ const Item = ({name, price, image}) => {
         />
         <CardContent>
             <h5 className='text-red-950 font-bold text-2xl'>{name}</h5>
-            <h6 className='italic text-red-300'>{price}</h6>
+            <h6 className='italic text-red-400'>{price}</h6>
         </CardContent>
         </Card>
     )
