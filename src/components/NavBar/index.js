@@ -5,7 +5,7 @@ import logo from "../../assets/images/logo.png"
 const NavBar = () => {
 
     return (
-        <div className="navBar bg-red-200 p-3.5 flex justify-center shadow-md">
+        <div className="navBar bg-red-200 p-3.5 flex justify-center shadow-md z-50">
             <div className="navBarInner flex justify-between" style={{width: 1200}}>
                 <div className="navBarLogoContainer flex items-center">
                     <Link to="/" className="flex  items-center">
