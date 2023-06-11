@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Spinner from "../Spinner/Spinner"
-import "./style.css";
 import Item from "../Item";
 import SearchBar from "../SearchBar";
 
@@ -44,17 +43,21 @@ const ItemListContainerHome = () => {
     return (
         <>
           {loading ? (
-            <div className="itemListContainer">
-                <h2>🍿 Welcome! 🍿</h2>
-                <div className="spinner">
-                    <Spinner />
+            <div className="itemListContainer flex flex-col items-center mb-14">
+                <div className="mt-12 mb-10 flex flex-col items-center">
+                    <h2 className="mb-8 font-bold text-3xl">🍿 Welcome! 🍿</h2>
+                    <div className="spinner">
+                        <Spinner />
+                    </div>
                 </div>
             </div>
           ) : (
-            <div className="itemListContainer">
-                <h2>🍿 Welcome! 🍿</h2>
-                <SearchBar />
-                <ul>
+            <div className="itemListContainer flex flex-col items-center mb-14">
+                <div className="mt-12 mb-10 flex flex-col items-center">
+                    <h2 className="mb-8 font-bold text-3xl">🍿 Welcome! 🍿</h2>
+                    <SearchBar />
+                </div>
+                <ul className="lg:w-full lg:px-44 lg:flex lg:flex-wrap lg:justify-around">
                     {titles.map((i) => (
                         <li key={i.id}>
                             <Link to={`/title/${i.id}`}>

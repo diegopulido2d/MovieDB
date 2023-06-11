@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import Spinner from "../Spinner/Spinner"
-import "./style.css";
 import Item from "../Item";
 import SearchBar from "../SearchBar";
 import NoResults from "../../assets/images/noresults.png"
@@ -46,19 +45,22 @@ const ItemSearchContainer = () => {
     return (
         <>
           {loading ? (
-            <div className="itemListContainer">
-                <h2>Searching: "{title}"</h2>
-                <div className="spinner">
-                    <Spinner />
+            <div className="itemListContainer flex flex-col items-center mb-14">
+                <div className="mt-12 mb-10 flex flex-col items-center">
+                    <h2 className="mb-8 font-bold text-3xl">Searching: "{title}"</h2>
+                    <div className="spinner">
+                        <Spinner />
+                    </div>
                 </div>
             </div>
           ) : (
-            <div className="itemListContainer">
-                <h2>Searching: "{title}"</h2>
-                <SearchBar />
-                {console.log(titles)}
-                    { titles.length === 0 ? <img src={NoResults} alt=""></img> : 
-                    <ul>
+            <div className="itemListContainer flex flex-col items-center mb-14">
+                <div className="mt-12 mb-10 flex flex-col items-center">
+                    <h2 className="mb-8 font-bold text-3xl">Searching: "{title}"</h2>
+                    <SearchBar />
+                </div>
+                    {titles.length === 0 ? <img src={NoResults} className="p-10" alt=""></img> : 
+                    <ul className="lg:w-full lg:px-44 lg:flex lg:flex-wrap lg:justify-around">
                         {titles.map((i) => (
                             <li key={i.id}>
                                 <Link to={`/title/${i.id}`}>
