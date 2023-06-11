@@ -3,18 +3,19 @@ import "./style.css";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import NotFoundImg from '../../assets/images/notfound.jpg'
 
 
 const Item = ({name, price, image}) => {
     return (
         <Card sx={{ width: 280 }}>
         <CardMedia
-            sx={{ height: 350 }}
-            image={image}
+            sx={{ height: 450 }}
+            image={image ? image : NotFoundImg}
         />
         <CardContent>
             <h5>{name}</h5>
-            <h6>${price},00</h6>
+            <h6>{price}</h6>
         </CardContent>
         </Card>
     )

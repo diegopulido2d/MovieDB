@@ -1,27 +1,21 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/";
-import Checkout from "./pages/Checkout";
-import Category from "./pages/Category/";
-import Product from "./pages/Product/";
 import './App.css';
 import NavBar from './components/NavBar';
+import Title from "./pages/Title";
+import Search from "./pages/Search";
 
-// CONTEXT
-import { ItemsProvider } from "./context/ItemsContext";
 
 function App() {
   return (
-    <ItemsProvider>
         <Router>
           <NavBar />
           <Routes>
             <Route path="/" element={<Home />}/>
-            <Route path="/checkout" element={<Checkout />}/>
-            <Route path="/category/:id" element={<Category />}/>
-            <Route path="/product/:id" element={<Product />}/>
+            <Route path="/search/:title" element={<Search />}/>
+            <Route path="/title/:id" element={<Title />}/>
           </Routes>
         </Router>
-    </ItemsProvider>
   );
 }
 

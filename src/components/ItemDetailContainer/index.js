@@ -1,69 +1,42 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Spinner from "../Spinner/Spinner";
 import "./style.css";
 
-import { ItemsContext } from "../../context/ItemsContext";
+import axios from "axios";
 
-import { db } from "../../firebase/firebaseConfig";
-import { collection, query, getDocs, where, documentId } from "firebase/firestore"
 
 const ItemDetailContainer = () => {
 
-  const {items, setItems, setCartQuantity} = useContext(ItemsContext);
-  const [productDetail, setProductDetail] = useState([]);
+  const [titleDetail, setTitleDetail] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [quantity, setQuantity] = useState(1);
   
-  let {id} = useParams();
-
-  const handleDecrement = () => {
-    quantity > 1 ? 
-    setQuantity(quantity-1)
-    :
-    <></>
-  };
-  const handleIncrement = () => {
-    setQuantity(quantity+1)
-  };
-
-  const addToCart = () => {
-    
-    const {name, img, price} = productDetail[0];
-    
-    const cartProduct = {
-      "name": name,
-      "img": img,
-      "price": price,
-      "quantity": quantity
-    };
-
-    const newCart = items;
-    newCart.push(cartProduct);
-    setItems(newCart);
-    setCartQuantity(items.length);
-
-  }
-
+  const {id} = useParams();
   useEffect(() => {
 
-    setLoading(true);
+      setLoading(true);
 
-    const getProduct = async () => {
+      const options = {
+          method: 'GET',
+          url: 'https://moviesdatabase.p.rapidapi.com/titles/'+id,
+          headers: {
+            'X-RapidAPI-Key': '432f7bf076msh3339b682685d302p17f26ajsnde2d013bfcc5',
+            'X-RapidAPI-Host': 'moviesdatabase.p.rapidapi.com'
+          }
+      };
+      
+      const getData = async () => {
+            try {
+                const response = await axios.request(options);
+                setTitleDetail(response.data?.results);
+                console.log(response.data?.results)
+                setLoading(false);
+            } catch (error) {
+                console.error(error);
+          }
+      }
 
-      const q = query(collection(db, "products"), where(documentId(), "==", id));
-      const querySnapshot = await getDocs(q);
-      const docs = [];
-      querySnapshot.forEach((doc) =>{ 
-          docs.push({...doc.data(), id:doc.id})
-      });
-      setProductDetail(docs);
-
-  }
-  getProduct();
-  setTimeout(() => {
-      setLoading(false);
-  }, 1000);
+      getData();
       
   },[id]);
 
@@ -75,28 +48,22 @@ const ItemDetailContainer = () => {
                       <Spinner />
                   </div>
               </div>
-            ) : (
-              productDetail.map((data) => {
-                return <div className='detail' key={data.id}>
-                        <div className="detailContainer">
-                            <img src={data.img} alt=""></img>
-                            <div className='detailInfo'>
-                            <h2>{data.name}</h2>
-                            <p>{data.description}</p>
-                            <h5>${data.price},00 USD</h5>
-                            <div className='purchaseContainer'>
-                              <button className='cartButton' onClick={addToCart}>Agregar al carrito</button>
-                              <div className='quantitySelector'>
-                                <button onClick={handleDecrement}>-</button>
-                                <p>{quantity}</p>
-                                <button onClick={handleIncrement}>+</button>
-                              </div>
-                            </div>
-                            </div>
-                        </div>
+            ) : (<div className='detail' key={titleDetail.id}>
+                      <div className="detailContainer">
+                          <img src={titleDetail.primaryImage?.url} alt=""></img>
+                          <div className='detailInfo'>
+                          <h6>
+                            <span>{titleDetail.releaseDate?.day} / </span>
+                            <span>{titleDetail.releaseDate?.month} / </span>
+                            <span>{titleDetail.releaseDate?.year}</span>
+                          </h6>
+                          <h2>{titleDetail.originalTitleText?.text}</h2>
+                          <h6>{titleDetail.titleText?.text}</h6>
+                          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                          </div>
                       </div>
-              })
-            )}
+                    </div>)
+      }
     </>
       
   )

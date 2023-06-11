@@ -3,56 +3,65 @@ import { Link } from "react-router-dom";
 import Spinner from "../Spinner/Spinner"
 import "./style.css";
 import Item from "../Item";
+import SearchBar from "../SearchBar";
 
-import { db } from "../../firebase/firebaseConfig";
-import { collection, query, getDocs } from "firebase/firestore"
+import axios from "axios";
+
 
 const ItemListContainerHome = () => {
 
-    const [products, setProducts] = useState([]);
+    const [titles, setTitles] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
 
-        setLoading(true);
+        setLoading(true)
+
+        const options = {
+            method: 'GET',
+            url: 'https://moviesdatabase.p.rapidapi.com/titles/x/upcoming',
+            headers: {
+              'X-RapidAPI-Key': '432f7bf076msh3339b682685d302p17f26ajsnde2d013bfcc5',
+              'X-RapidAPI-Host': 'moviesdatabase.p.rapidapi.com'
+            }
+        };
         
-        const getProducts = async () => {
-
-            const q = query(collection(db, "products"));
-            const querySnapshot = await getDocs(q);
-            const docs = [];
-            querySnapshot.forEach((doc) =>{ 
-                docs.push({...doc.data(), id:doc.id})
-            });
-            setProducts(docs);
-
+        const getData = async () => {
+              try {
+                  const response = await axios.request(options);
+                  setTitles(response.data?.results);
+                  console.log(response.data?.results)
+                  setLoading(false);
+              } catch (error) {
+                  console.error(error);
+            }
         }
-        getProducts();
-        setTimeout(() => {
-            setLoading(false);
-        }, 1000);
+
+        getData();
+
     },[]);
 
     return (
         <>
           {loading ? (
             <div className="itemListContainer">
-                <h2>🍁 Welcome! 🍁</h2>
+                <h2>🍿 Welcome! 🍿</h2>
                 <div className="spinner">
                     <Spinner />
                 </div>
             </div>
           ) : (
             <div className="itemListContainer">
-                <h2>🍁 Welcome! 🍁</h2>
+                <h2>🍿 Welcome! 🍿</h2>
+                <SearchBar />
                 <ul>
-                    {products.map((i) => (
+                    {titles.map((i) => (
                         <li key={i.id}>
-                            <Link to={`/product/${i.id}`}>
+                            <Link to={`/title/${i.id}`}>
                                 <Item 
-                                    name = {i.name}
-                                    price = {i.price}
-                                    image = {i.img}
+                                    name = {i.originalTitleText?.text}
+                                    price = {i.primaryImage?.caption?.plainText}
+                                    image = {i.primaryImage?.url}
                                 />
                             </Link>
                         </li>
