@@ -8,9 +8,9 @@ Instalación:
 3. Iniciar el proyecto en localhost: npm start
 
 ## Dependencias
-Material UI -> Estilos de Cards y Spinner
-Tailwind CSS -> Estilos generales
-Axios -> Consumo de endpoint externo
+- Material UI -> Estilos de Cards y Spinner
+- Tailwind CSS -> Estilos generales
+- Axios -> Consumo de endpoint externo
 
 ## Servicio API
 
